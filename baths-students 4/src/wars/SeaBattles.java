@@ -16,6 +16,9 @@ public class SeaBattles implements BATHS
 
     private String admiral;
     private double warChest;
+    private List<Ship> squadron;
+    private List<Ship> reserveFleet;
+    private List<Encounter> encounters;
 
 
 //**************** BATHS ************************** 
@@ -24,10 +27,13 @@ public class SeaBattles implements BATHS
      */  
     public SeaBattles(String adm)
     {
-      
-        
-       setupShips();
-       setupEncounters();
+        this.admiral = adm;
+        this.warChest = 1000;
+        this.squadron = new ArrayList<>();
+        this.reserveFleet = new ArrayList<>();
+        this.encounters = new ArrayList<>();
+        setupShips();
+        setupEncounters();
     }
     
     /** Constructor requires the name of the admiral and the
@@ -146,7 +152,7 @@ public class SeaBattles implements BATHS
         return "- Ship not found";
     }
         
-    /** Returns true if the ship with the name is in the admiral's squadron, false otherwise.
+    /** Re§turns true if the ship with the name is in the admiral's squadron, false otherwise.
      * @param nme is the name of the ship
      * @return returns true if the ship with the name is in the admiral's squadron, false otherwise.
      **/
