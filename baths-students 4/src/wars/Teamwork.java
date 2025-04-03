@@ -20,7 +20,7 @@ public class Teamwork
         details[0] = "team number";
         
         details[1] = "surname of member1";
-        details[2] = "first name of member1";
+        details[2] = "Okikioluwa";
         details[3] = "SRN of member1";
 
         details[4] = "surname of member2";
