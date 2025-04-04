@@ -14,10 +14,10 @@ public class Frigate extends Ship
     
     
     
-    public Frigate(String nme, int skillLevel, String captain, int cannons)
+    public Frigate(String nme, ShipState state, int skillLevel, String captain, int cannons, boolean pinnace)
     {
-        super(nme, skillLevel, captain, "Frigate", true, true, true,0,0, cannons );
-        pinnace = false;
+        super(nme,state, skillLevel, captain, "Frigate", true, true,false,0,0, cannons );
+        this.pinnace = pinnace;
         
         
     }
@@ -28,17 +28,18 @@ public class Frigate extends Ship
     }
     
     
-    public void setPinnace(String pin)
+   
+    public void setBlockades()
     {
-       if (pin.equalsIgnoreCase("Yes"))
-       {
-          pinnace = true;
-       } 
-       else 
-       {
-          pinnace = false; 
-       }
-    }
+        if(pinnace == true)
+        {
+            super.setBlockade();
+        }
+        else
+        {
+            super.noBlockade();
+        }
+        }
     
     @Override
     public String toString()
@@ -48,3 +49,4 @@ public class Frigate extends Ship
       return report;
     }
 }
+
