@@ -50,7 +50,7 @@ public class Encounter
     {
         return e_Prize;
     }
-
+    
     public String toString()
     {
         String report = "";
