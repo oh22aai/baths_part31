@@ -62,8 +62,39 @@ public class SeaBattles implements BATHS
      **/
     public String toString()
     {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Admiral: ").append(admiral).append("\n");
+        sb.append("War Chest: ").append(warChest).append("\n");
+
+        if (isDefeated()) 
+        {
+           sb.append("Status: Defeated\n\n");
+        } else 
+        {
+           sb.append("Status: Surviving\n\n");
+        }
         
-        return "null";
+        sb.append("Squadron:\n");
+        String squadronShips = getSquadron();
+        if (squadronShips.trim().isEmpty()) 
+        {
+           sb.append("No ships commissioned\n");
+        } else 
+        {
+           sb.append(squadronShips).append("\n");
+        }
+
+        sb.append("Reserve Fleet:\n");
+        String reserveShips = getReserveFleet();
+        if (reserveShips.trim().isEmpty())
+        {
+            sb.append("No ships in reserve\n");
+        } else
+        {
+           sb.append(reserveShips).append("\n");
+        }
+
+        return sb.toString();
     }
     
     
