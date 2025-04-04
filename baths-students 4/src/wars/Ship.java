@@ -21,11 +21,11 @@ public class Ship {
     private int decks;
     private int cannons;
    
-    public Ship(String nme, int skillLevel, String captain, String type, boolean battle, boolean skirmish, boolean blockade,int cost, int decks, int cannons)
+    public Ship(String nme,ShipState state, int skillLevel, String captain, String type, boolean battle, boolean skirmish, boolean blockade,int cost, int decks, int cannons)
     {
         name = nme;
         this.skillLevel = skillLevel;
-        state = ShipState.RESERVE;
+        this.state = state;
         this.captain = captain;
         this.type = type;
         this.battle = battle;
@@ -52,7 +52,7 @@ public class Ship {
         return captain;
     }
     
-    public String getType(String type)
+    public String getType()
     {
         return type;
     }
@@ -61,6 +61,34 @@ public class Ship {
     public ShipState getShipState()
     {
         return state;
+    }
+    
+    public void setState(String states)
+    {
+        if (states.equalsIgnoreCase("Active"))
+        {
+            state = ShipState.ACTIVE;
+        }
+        
+        else if(states.equalsIgnoreCase("Sunk"))
+        {
+            state = ShipState.SUNK;
+        }
+        
+        else if(states.equalsIgnoreCase("Reserve"))
+        {
+            state = ShipState.RESERVE;
+        }
+        
+        else if(states.equalsIgnoreCase("Resting"))
+        {
+            state = ShipState.RESTING;
+        }
+        
+        else
+        {
+            state = state;
+        }
     }
     
     public boolean getBattle()
@@ -82,6 +110,23 @@ public class Ship {
     {
         return blockade;
     }
+    
+    public void setBlockade()
+    {
+        if (type.equalsIgnoreCase("Frigate"))
+        {
+            blockade = true;
+        }
+    }
+    
+    public void noBlockade()
+    {
+        if(type.equalsIgnoreCase("Frigate"))
+        {
+            blockade = false;
+        }
+    }
+    
     
     public void setCost(String type)
     {
