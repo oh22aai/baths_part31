@@ -600,13 +600,22 @@ public class SeaBattles implements BATHS
          reserve.put("Gemld",shipt);
          reserve.put("Lewis",ships);
          reserve.put("Lawis",shipq);
+         reserve.put("Victory",ship6);
+         reserve.put("Sophie",ship7);
+         reserve.put("Endeavour",ship8);
+         reserve.put("Arrow", Ship9);
+         reserve.put("Belerophon", ship10);
+         reserve.put("Suprise", ship11);
+         reserve.put("Jupiter", ship12);
+         reserve.put("Paris", Ship13);
+         reserve.put("Beast", Ship14);
+         reserve.put("Athena", Ship15);
 
 
      }
      
     private void setupEncounters()
-    {
-        
+    { 
   
     }
     
