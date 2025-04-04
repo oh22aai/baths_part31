@@ -13,9 +13,9 @@ public class Man_O_War extends Ship
     private int marines;
     
     
-    public Man_O_War(String nme, int skillLevel, String captain, int deck, int marine)
+    public Man_O_War(String nme,ShipState state, int skillLevel, String captain, int deck, int marine)
     {
-        super( nme,skillLevel,captain,"Man-O-War",true, false,true, 0, deck,0);
+        super( nme,state,skillLevel,captain,"Man-O-War",true, false,true, 0, deck,0);
         marines = marine;
     }
     
@@ -35,4 +35,5 @@ public class Man_O_War extends Ship
       report += "Number of marines: " + marines + "\n";
       return report;
     }
-} 
+}
+
