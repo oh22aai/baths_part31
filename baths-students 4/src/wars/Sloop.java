@@ -13,9 +13,9 @@ public class Sloop extends Ship
     private boolean doctor;
     
     
-    public Sloop(String nme, String captain, int cost)
+    public Sloop(String nme, ShipState state, String captain, int cost)
     {
-        super (nme, 5, captain,"Sloop", true, true, false, cost,0,0);
+        super (nme,state, 5, captain,"Sloop", true, true, false, cost,0,0);
         doctor = false;
     }
     
@@ -47,3 +47,4 @@ public class Sloop extends Ship
     }
     
 }
+
