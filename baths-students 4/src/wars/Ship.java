@@ -17,11 +17,11 @@ public class Ship {
     private boolean battle ;
     private boolean skirmish ;
     private boolean blockade ;
-    private int cost;
+    private double cost;
     private int decks;
     private int cannons;
    
-    public Ship(String nme,ShipState state, int skillLevel, String captain, String type, boolean battle, boolean skirmish, boolean blockade,int cost, int decks, int cannons)
+    public Ship(String nme,ShipState state, int skillLevel, String captain, String type, boolean battle, boolean skirmish, boolean blockade,double cost, int decks, int cannons)
     {
         name = nme;
         this.skillLevel = skillLevel;
@@ -101,7 +101,7 @@ public class Ship {
         return skirmish;
     }
     
-    public int getCost()
+    public double getCost()
     {
         return cost;
     }
@@ -113,18 +113,22 @@ public class Ship {
     
     public void setBlockade()
     {
-        if (type.equalsIgnoreCase("Frigate"))
-        {
             blockade = true;
-        }
     }
     
     public void noBlockade()
     {
-        if(type.equalsIgnoreCase("Frigate"))
-        {
             blockade = false;
-        }
+    }
+    
+    public void setBattle()
+    {
+        battle = true;
+    }
+    
+    public void noBattle()
+    {
+            battle = false;
     }
     
     
@@ -167,11 +171,11 @@ public class Ship {
     public String toString()
     {
         String s ="";
-        s+= "Name of ship: " + name + "\n" + "Name of captain: " + captain
+        s+= "\n" + "Name of ship: " + name + "\n" + "Name of captain: " + captain
              + "\n" + "Skill Level :" + skillLevel + "\n"
              + "Type of ship: " + type + "\n" + "Battle: " + battle + "\n" + 
-                "Skirmish: " + skirmish + "\n" + "Blockade: " + blockade + "\n" + "Cost: " + cost + "\n" + 
-                state.toString() + "\n";
+                "Skirmish: " + skirmish + "\n" + "Blockade: " + blockade + "\n" + "Cost: " + cost + "\n" + state.toString() + "\n"
+                 ;
         return s;
     }
         
