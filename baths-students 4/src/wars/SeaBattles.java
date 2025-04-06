@@ -10,16 +10,6 @@ import java.io.*;
  * @version 16/02/25
  */
 
-import java.util.*;
-import java.io.*;
-/**
- * This class implements the behaviour expected from the BATHS
- system as required for 5COM2007 Cwk1B BATHS - Feb 2025
- * 
- * @author A.A.Marczyk 
- * @version 16/02/25
- */
-
 public class SeaBattles implements BATHS, Serializable
 {
     // may have one HashMap and select on stat
@@ -359,91 +349,339 @@ public class SeaBattles implements BATHS, Serializable
       * @param encNo is the number of the encounter
       * @return a String showing the result of fighting the encounter
       */ 
-    public String fightEncounter(int encNo) {
-    String s = "";
-    String t = "";
-    String u = "";
-    String v = "";
-    String y = "";
-    String z = "";
-    String c = "";
-    String d = "";
+    // public String fightEncounter(int encNo) {
+    // String s = "";
+    // String t = "";
+    // String u = "";
+    // String v = "";
+    // String y = "";
+    // String z = "";
+    // String c = "";
+    // String d = "";
+    // String a = "";
+
+    // // Check if the encounter number is valid
+    // if (isEncounter(encNo)) {
+        // Encounter enc = getEncounters(encNo);
+
+        // // First, check if the squadron is empty
+        // if (squadron.isEmpty()) {
+            // warChest = warChest - enc.getE_Prize();
+            // s = "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n" 
+                // + "State of warchest: " + warChest + "\n";
+            // return s; // No ships available
+        // }
+        // if(squadron.isEmpty() && warChest >=0)
+        // {
+            // a = "YOU LOSE";
+            // return a;
+        // }
+        
+
+        // // Loop through the ships in the squadron
+        // for (Ship ship : squadron.values()) {
+
+            // // Check if the ship can fight based on the encounter type and skill level
+            // if (enc.getE_Type().equalsIgnoreCase("Battle")) {
+                // if (ship.getBattle() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // warChest += enc.getE_Prize();
+                    // ship.setState("Resting");
+                    // u = ship.toString() + enc.toString() + 
+                        // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return u;
+                // } else if (ship.getBattle() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // ship.setState("Sunk");
+                    // warChest -= enc.getE_Prize();
+                    // v = ship.toString() + enc.toString() + 
+                        // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return v;
+                // }
+            // }
+
+            // if (enc.getE_Type().equalsIgnoreCase("Skirmish")) {
+                // if (ship.getSkirmish() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // warChest += enc.getE_Prize();
+                    // ship.setState("Resting");
+                    // y = ship.toString() + enc.toString() + 
+                        // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return y;
+                // } else if (ship.getSkirmish() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // ship.setState("Sunk");
+                    // warChest -= enc.getE_Prize();
+                    // z = ship.toString() + enc.toString() + 
+                        // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return z;
+                // }
+            // }
+
+            // if (enc.getE_Type().equalsIgnoreCase("Blockade")) {
+                // if (ship.getBlockade() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // warChest += enc.getE_Prize();
+                    // ship.setState("Resting");
+                    // c = ship.toString() + enc.toString() + 
+                        // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return c;
+                // } else if (ship.getBlockade() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                    // ship.setState("Sunk");
+                    // warChest -= enc.getE_Prize();
+                    // d = ship.toString() + enc.toString() + 
+                        // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        // + "State of warchest: " + warChest + "\n";
+                    // return d;
+                // }
+            // }
+        // }
+    // }
+
+    // // If we reach this point, the encounter was not found or no ship could fight
+    // return "No such encounter";
+// }
+// public String fightEncounter(int encNo) {
+    // String result = "";
+    
+    // // Check if the encounter number is valid
+    // if (!isEncounter(encNo)) {
+        // return "No such encounter";
+    // }
+
+    // Encounter enc = getEncounters(encNo);
+
+    // // Deduct the prize from the warchest regardless of whether there are ships
+    // warChest -= enc.getE_Prize();
+
+    // // If the warchest goes to 0 or below, the player loses their job
+    // if (warChest <= 0) {
+        // warChest = 0;
+        // return "You lost your job because your warchest is empty.\nState of warchest: " + warChest;
+    // }
+
+    // // If the squadron is empty, you cannot fight the encounter, but still lose the prize
+    // if (squadron.isEmpty()) {
+        // return "No ships available to fight the encounter, prize lost: " + enc.getE_Prize() + "\nState of warchest: " + warChest;
+    // }
+
+    // // Loop through the ships in the squadron and try to fight the encounter
+    // boolean shipFound = false;  // Track if we find a suitable ship for the encounter
+    // for (Ship ship : squadron.values()) {
+
+        // // Check if the ship can fight based on the encounter type and skill level
+        // if (enc.getE_Type().equalsIgnoreCase("Battle")) {
+            // if (ship.getBattle() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // warChest += enc.getE_Prize();
+                // ship.setState("Resting");
+                // result = ship.toString() + enc.toString() + 
+                         // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         // + "State of warchest: " + warChest + "\n";
+                // return result;
+            // } else if (ship.getBattle() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // ship.setState("Sunk");
+                // warChest -= enc.getE_Prize();
+                // if (warChest <= 0) {
+                    // warChest = 0;
+                    // return ship.toString() + enc.toString() + 
+                           // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           // + "You lose your job.\nState of warchest: " + warChest + "\n";
+                // } else {
+                    // result = ship.toString() + enc.toString() + 
+                             // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             // + "State of warchest: " + warChest + "\n";
+                    // return result;
+                // }
+            // }
+        // }
+
+        // if (enc.getE_Type().equalsIgnoreCase("Skirmish")) {
+            // if (ship.getSkirmish() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // warChest += enc.getE_Prize();
+                // ship.setState("Resting");
+                // result = ship.toString() + enc.toString() + 
+                         // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         // + "State of warchest: " + warChest + "\n";
+                // return result;
+            // } else if (ship.getSkirmish() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // ship.setState("Sunk");
+                // warChest -= enc.getE_Prize();
+                // if (warChest <= 0) {
+                    // warChest = 0;
+                    // return ship.toString() + enc.toString() + 
+                           // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           // + "You lose your job.\nState of warchest: " + warChest + "\n";
+                // } else {
+                    // result = ship.toString() + enc.toString() + 
+                             // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             // + "State of warchest: " + warChest + "\n";
+                    // return result;
+                // }
+            // }
+        // }
+
+        // if (enc.getE_Type().equalsIgnoreCase("Blockade")) {
+            // if (ship.getBlockade() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // warChest += enc.getE_Prize();
+                // ship.setState("Resting");
+                // result = ship.toString() + enc.toString() + 
+                         // "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         // + "State of warchest: " + warChest + "\n";
+                // return result;
+            // } else if (ship.getBlockade() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                // ship.setState("Sunk");
+                // warChest -= enc.getE_Prize();
+                // if (warChest <= 0) {
+                    // warChest = 0;
+                    // return ship.toString() + enc.toString() + 
+                           // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           // + "You lose your job.\nState of warchest: " + warChest + "\n";
+                // } else {
+                    // result = ship.toString() + enc.toString() + 
+                             // "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             // + "State of warchest: " + warChest + "\n";
+                    // return result;
+                // }
+            // }
+        // }
+
+        // // If any suitable ship was found, break the loop and fight the encounter
+        // shipFound = true;
+    // }
+
+    // // If no suitable ship was found to fight the encounter
+    // if (!shipFound) {
+        // return "No suitable ship available to fight the encounter, prize lost: " + enc.getE_Prize() + "\nState of warchest: " + warChest;
+    // }
+
+    // return result;
+// }
+public String fightEncounter(int encNo) {
+    String result = "";
 
     // Check if the encounter number is valid
-    if (isEncounter(encNo)) {
-        Encounter enc = getEncounters(encNo);
-
-        // First, check if the squadron is empty
-        if (squadron.isEmpty()) {
-            warChest = warChest - enc.getE_Prize();
-            s = "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n" 
-                + "State of warchest: " + warChest + "\n";
-            return s; // No ships available
-        }
-
-        // Loop through the ships in the squadron
-        for (Ship ship : squadron.values()) {
-
-            // Check if the ship can fight based on the encounter type and skill level
-            if (enc.getE_Type().equalsIgnoreCase("Battle")) {
-                if (ship.getBattle() && ship.getSkillLevel() >= enc.getE_Level()) {
-                    warChest += enc.getE_Prize();
-                    ship.setState("Resting");
-                    u = ship.toString() + enc.toString() + 
-                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return u;
-                } else if (ship.getBattle() && ship.getSkillLevel() < enc.getE_Level()) {
-                    ship.setState("Sunk");
-                    warChest -= enc.getE_Prize();
-                    v = ship.toString() + enc.toString() + 
-                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return v;
-                }
-            }
-
-            if (enc.getE_Type().equalsIgnoreCase("Skirmish")) {
-                if (ship.getSkirmish() && ship.getSkillLevel() >= enc.getE_Level()) {
-                    warChest += enc.getE_Prize();
-                    ship.setState("Resting");
-                    y = ship.toString() + enc.toString() + 
-                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return y;
-                } else if (ship.getSkirmish() && ship.getSkillLevel() < enc.getE_Level()) {
-                    ship.setState("Sunk");
-                    warChest -= enc.getE_Prize();
-                    z = ship.toString() + enc.toString() + 
-                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return z;
-                }
-            }
-
-            if (enc.getE_Type().equalsIgnoreCase("Blockade")) {
-                if (ship.getBlockade() && ship.getSkillLevel() >= enc.getE_Level()) {
-                    warChest += enc.getE_Prize();
-                    ship.setState("Resting");
-                    c = ship.toString() + enc.toString() + 
-                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return c;
-                } else if (ship.getBlockade() && ship.getSkillLevel() < enc.getE_Level()) {
-                    ship.setState("Sunk");
-                    warChest -= enc.getE_Prize();
-                    d = ship.toString() + enc.toString() + 
-                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
-                        + "State of warchest: " + warChest + "\n";
-                    return d;
-                }
-            }
-        }
+    if (!isEncounter(encNo)) {
+        return "No such encounter";
     }
 
-    // If we reach this point, the encounter was not found or no ship could fight
-    return "No such encounter";
+    Encounter enc = getEncounters(encNo);
+
+    // Deduct the prize from the warchest regardless of whether there are ships
+    warChest -= enc.getE_Prize();
+
+    // Show the deduction from the warchest immediately
+    result += "Prize lost: " + enc.getE_Prize() + "\n" + "State of warchest after deduction: " + warChest + "\n";
+
+    // If the warchest goes to 0 or below, the player loses their job
+    if (warChest <= 0) {
+        warChest = 0;
+        return result + "You lost your job because your warchest is empty.\nState of warchest: " + warChest;
+    }
+
+    // If the squadron is empty, you cannot fight the encounter, but still lose the prize
+    if (squadron.isEmpty()) {
+        return result + "No ships available to fight the encounter, prize lost: " + enc.getE_Prize() + "\nState of warchest: " + warChest;
+    }
+
+    // Loop through the ships in the squadron and try to fight the encounter
+    boolean shipFound = false;  // Track if we find a suitable ship for the encounter
+    for (Ship ship : squadron.values()) {
+
+        // Check if the ship can fight based on the encounter type and skill level
+        if (enc.getE_Type().equalsIgnoreCase("Battle")) {
+            if (ship.getBattle() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                warChest += enc.getE_Prize();
+                ship.setState("Resting");
+                result = ship.toString() + enc.toString() + 
+                         "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         + "State of warchest: " + warChest + "\n";
+                return result;
+            } else if (ship.getBattle() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                ship.setState("Sunk");
+                // Deduct the prize from warchest if the ship loses
+                warChest -= enc.getE_Prize();
+                if (warChest <= 0) {
+                    warChest = 0;
+                    return ship.toString() + enc.toString() + 
+                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           + "You lose your job.\nState of warchest: " + warChest + "\n";
+                } else {
+                    result = ship.toString() + enc.toString() + 
+                             "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             + "State of warchest: " + warChest + "\n";
+                    return result;
+                }
+            }
+        }
+
+        if (enc.getE_Type().equalsIgnoreCase("Skirmish")) {
+            if (ship.getSkirmish() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                warChest += enc.getE_Prize();
+                ship.setState("Resting");
+                result = ship.toString() + enc.toString() + 
+                         "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         + "State of warchest: " + warChest + "\n";
+                return result;
+            } else if (ship.getSkirmish() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                ship.setState("Sunk");
+                // Deduct the prize from warchest if the ship loses
+                warChest -= enc.getE_Prize();
+                if (warChest <= 0) {
+                    warChest = 0;
+                    return ship.toString() + enc.toString() + 
+                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           + "You lose your job.\nState of warchest: " + warChest + "\n";
+                } else {
+                    result = ship.toString() + enc.toString() + 
+                             "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             + "State of warchest: " + warChest + "\n";
+                    return result;
+                }
+            }
+        }
+
+        if (enc.getE_Type().equalsIgnoreCase("Blockade")) {
+            if (ship.getBlockade() && ship.getSkillLevel() >= enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                warChest += enc.getE_Prize();
+                ship.setState("Resting");
+                result = ship.toString() + enc.toString() + 
+                         "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                         + "State of warchest: " + warChest + "\n";
+                return result;
+            } else if (ship.getBlockade() && ship.getSkillLevel() < enc.getE_Level() && ship.getShipState() == ShipState.ACTIVE) {
+                ship.setState("Sunk");
+                // Deduct the prize from warchest if the ship loses
+                warChest -= enc.getE_Prize();
+                if (warChest <= 0) {
+                    warChest = 0;
+                    return ship.toString() + enc.toString() + 
+                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                           + "You lose your job.\nState of warchest: " + warChest + "\n";
+                } else {
+                    result = ship.toString() + enc.toString() + 
+                             "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                             + "State of warchest: " + warChest + "\n";
+                    return result;
+                }
+            }
+        }
+
+        // If any suitable ship was found, break the loop and fight the encounter
+        shipFound = true;
+    }
+
+    // If no suitable ship was found to fight the encounter
+    if (!shipFound) {
+        return result + "No suitable ship available to fight the encounter, prize lost: " + enc.getE_Prize() + "\nState of warchest: " + warChest;
+    }
+
+    return result;
 }
+
+
+
+
+
 
 
     /** Provides a String representation of an encounter given by 
@@ -703,4 +941,3 @@ public class SeaBattles implements BATHS, Serializable
     
  
 }
-
