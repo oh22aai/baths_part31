@@ -10,6 +10,16 @@ import java.io.*;
  * @version 16/02/25
  */
 
+import java.util.*;
+import java.io.*;
+/**
+ * This class implements the behaviour expected from the BATHS
+ system as required for 5COM2007 Cwk1B BATHS - Feb 2025
+ * 
+ * @author A.A.Marczyk 
+ * @version 16/02/25
+ */
+
 public class SeaBattles implements BATHS 
 {
     // may have one HashMap and select on stat
@@ -474,7 +484,8 @@ public class SeaBattles implements BATHS
      **/
     public String getEncounter(int num)
     {
-        for (Encounter encounter : encounterList.values()) {
+        for (Encounter encounter : encounterList.values()) 
+        {
          if (encounter.getE_Number() == num) 
          {
             return encounter.toString();
@@ -489,17 +500,17 @@ public class SeaBattles implements BATHS
      **/
     public String getAllEncounters()
     {
-        StringBuilder encList = new StringBuilder();
-        for(Encounter enc : encounterList.values())
+        if (encounterList.isEmpty()) 
         {
-            if(!encounterList.isEmpty())
-            {
-                encList.append(enc.toString()).append("\n");
-                return encList.toString();
-            }
-            
+          return "No such encounter"; 
         }
-        return "no encounters available";
+
+        StringBuilder encList = new StringBuilder();
+        for (Encounter enc : encounterList.values()) 
+        {
+            encList.append(enc.toString()).append("\n"); 
+        }
+        return encList.toString();
     }
     
 
@@ -604,6 +615,7 @@ public class SeaBattles implements BATHS
         Encounter enc8 = new Encounter("Battle", 4, "Finisterre", 100);
         Encounter enc9 = new Encounter("Skirmish", 5, "Biscay", 200);
         Encounter enc10 = new Encounter("Battle", 1, "Cadiz", 250);
+       
         
         encounterList.put(1,enc1);
         encounterList.put(2,enc2);
@@ -690,4 +702,3 @@ public class SeaBattles implements BATHS
     
  
 }
-
