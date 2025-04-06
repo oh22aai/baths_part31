@@ -14,9 +14,9 @@ public class Frigate extends Ship
     
     
     
-    public Frigate(String nme, ShipState state, int skillLevel, String captain, int cannons, boolean pinnace)
+    public Frigate(String nme, int skillLevel, String captain, int cannons, boolean pinnace)
     {
-        super(nme,state, skillLevel, captain, "Frigate", true, true,false,0,0, cannons );
+        super(nme,ShipState.NULL, skillLevel, captain, "Frigate", true, true,false,0,0, cannons );
         this.pinnace = pinnace;
         
         
@@ -24,7 +24,15 @@ public class Frigate extends Ship
     
     public void setCost()
     {
-        super.setCost("Frigate");
+        if(super.getType().equalsIgnoreCase("Frigate"))
+        {
+           super.setCost(super.getType());
+        }
+    }
+    
+    public void setStates()
+    {
+        super.setState("Reserve");
     }
     
     
