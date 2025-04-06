@@ -1,5 +1,12 @@
 package wars;
 
+import java.io.Serializable;
+/**
+ * Write a description of class ShipState here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
 import java.io.*;
 /**
  * Enumeration class UnitState - write a description of the enum class here
