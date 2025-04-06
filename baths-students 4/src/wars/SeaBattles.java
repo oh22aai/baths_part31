@@ -704,4 +704,3 @@ public class SeaBattles implements BATHS, Serializable
  
 }
 
-
