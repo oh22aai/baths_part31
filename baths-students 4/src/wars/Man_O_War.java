@@ -13,16 +13,40 @@ public class Man_O_War extends Ship
     private int marines;
     
     
-    public Man_O_War(String nme,ShipState state, int skillLevel, String captain, int deck, int marine)
+    public Man_O_War(String nme,int skillLevel, String captain, int deck, int marine)
     {
-        super( nme,state,skillLevel,captain,"Man-O-War",true, false,true, 0, deck,0);
+        super( nme,ShipState.NULL,skillLevel,captain,"Man-O-War",false, false,false, 0, deck,0);
         marines = marine;
+    }
+    
+    public void setFights()
+    {
+        if(super.getCost() > 0)
+        {
+            super.setBattle();
+            super.setBlockade();
+            
+        }
+        else
+        {
+            super.noBattle();
+            super.noBlockade();
+        }
     }
     
     
     public void setCost()
     {
-        super.setCost("Man-O-War");
+        if(super.getType().equalsIgnoreCase("Man_O_War"))
+        {
+           super.setCost(super.getType());
+           super.setState("Reserve");
+        }
+    }
+    
+    public void setStates()
+    {
+        super.setState("Reserve");
     }
     
     
