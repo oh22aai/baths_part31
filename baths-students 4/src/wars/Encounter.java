@@ -11,13 +11,13 @@ package wars;
 public class Encounter 
 {
     private static int counter = 0;
-    private final int e_Number;
+    private int e_Number;
     private String e_Type;
     private int e_Level;
     private String e_Location;
-    private int e_Prize;
+    private double e_Prize;
     
-    public Encounter(String type, int skillLevel, String location, int prize)
+    public Encounter(String type, int skillLevel, String location, double prize)
     {
         e_Number = ++counter;
         e_Type = type;
@@ -46,20 +46,20 @@ public class Encounter
         return e_Location;
     }
     
-    public int getE_Prize()
+    public double getE_Prize()
     {
         return e_Prize;
     }
     
     public String toString()
     {
-        String report = "";
-        report += "Encounter: " + e_Number + "\n";
-        report += "Type of encounter: " + e_Type + "\n";
-        report += "Skill Level: " + e_Level + "\n";
-        report += "Location: " + e_Location + "\n";
-        report += "Prize Money: " + e_Prize + "\n";
-        return report;
+        StringBuilder report = new StringBuilder();
+        report.append("\n").append("Encounter: ").append( e_Number ).append("\n");
+        report.append("Type of encounter: ").append( e_Type).append("\n");
+        report.append("Skill Level: ").append(e_Level).append("\n");
+        report.append("Location: ").append(e_Location).append("\n");
+        report.append("Prize Money: ").append(e_Prize).append("\n");
+        return report.toString();
     }
     
     
