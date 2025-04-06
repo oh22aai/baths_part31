@@ -92,16 +92,9 @@ public class GameUI
            else if (choice == 10) // Task 7 only
            {
                System.out.println("Recommission from file");
-               SeaBattles myBattles2 = myBattles.loadGame("olenka.dat");  // Load the game
-               if (myBattles2 != null) 
-               {
-                  myBattles = myBattles2;  // Update myBattles with the loaded game state
-                  System.out.println(myBattles.toString());  // Print the loaded state
-               } 
-               else 
-               {
-                  System.out.println("Failed to load the game.");
-               }              
+               SeaBattles myBattles2 = null;
+               myBattles2 = myBattles.loadGame("olenka.dat");
+               System.out.println(myBattles2.toString());// Load the game
            }  
         }
         System.out.println("Thank-you");
