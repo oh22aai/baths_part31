@@ -20,7 +20,7 @@ import java.io.*;
  * @version 16/02/25
  */
 
-public class SeaBattles implements BATHS 
+public class SeaBattles implements BATHS, Serializable
 {
     // may have one HashMap and select on stat
 
@@ -56,12 +56,14 @@ public class SeaBattles implements BATHS
      */  
     public SeaBattles(String admir, String filename)  //Task 3
     {
-      
-        
+       admiral = admir;
+       warChest = 1000.0;
+       reserve = new HashMap<>();
+       squadron = new HashMap<>();
+       AllShips = new ArrayList<>();
+       encounterList = new HashMap<>();
        setupShips();
-       // setupEncounters();
-       // uncomment for testing Task 
-       // readEncounters(filename);
+       readEncounters(filename); // Use file instead of default data
     }
     
     
@@ -357,124 +359,92 @@ public class SeaBattles implements BATHS
       * @param encNo is the number of the encounter
       * @return a String showing the result of fighting the encounter
       */ 
-    public String fightEncounter(int encNo)
-    {
-       String s = "";
-       String t = "";
-       String u = "";
-       String v = "";
-       String y = "";
-       String z = "";
-       String c = "";
-       String d = "";
-       if (isEncounter(encNo))
-        {
-           Encounter enc = getEncounters(encNo);
-           for (Ship ship : squadron.values())
-           {
-              if(squadron.isEmpty())
-                  {
-                      warChest = warChest - enc.getE_Prize();
-                      s += ship.toString() + enc.toString() + 
-                      "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else if(squadron.isEmpty() && warChest <= 0)
-                  {
-                      t += ship.toString() + enc.toString() + 
-                      "Encounter is lost and you lose your job"+ "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return t;
-                  } 
-                  
-                  
-              if(enc.getE_Type().equalsIgnoreCase("Battle"))
-              {
-                   if(ship.getBattle() == true)
-                   {
-                      if(ship.getSkillLevel() >= enc.getE_Level())
-                      {
-                          warChest += enc.getE_Prize();
-                          ship.setState("Resting");
-                          u += ship.toString() + enc.toString() + 
-                          "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return u;
-                      }
-                      else if(ship.getSkillLevel() < enc.getE_Level())
-                      {
-                          ship.setState("Sunk");
-                          warChest -= enc.getE_Prize();
-                          v += ship.toString() + enc.toString() + 
-                          "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return v;
-                      }
-                      
-                   } 
-                
-             }
-             
-              if(enc.getE_Type().equalsIgnoreCase("Skirmish"))
-              {
-                   if(ship.getSkirmish() == true)
-                   {
-                      if(ship.getSkillLevel() >= enc.getE_Level())
-                      {
-                          warChest += enc.getE_Prize();
-                          ship.setState("Resting");
-                          y += ship.toString() + enc.toString() + 
-                          "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return y;
-                      }
-                      else if(ship.getSkillLevel() < enc.getE_Level())
-                      {
-                          ship.setState("Sunk");
-                          warChest = warChest - enc.getE_Prize();
-                          z += ship.toString() + enc.toString() + 
-                          "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return z;
-                      }
-                      
-                   } 
-                
-             }
-             
-              if(enc.getE_Type().equalsIgnoreCase("Blockade"))
-              {
-                   if(ship.getBlockade() == true)
-                   {
-                      if(ship.getSkillLevel() >= enc.getE_Level())
-                      {
-                          warChest = warChest + enc.getE_Prize();
-                          ship.setState("Resting");
-                          c += ship.toString() + enc.toString() + 
-                          "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return c;
-                      }
-                      else if(ship.getSkillLevel() < enc.getE_Level())
-                      {
-                          warChest = warChest - enc.getE_Prize();
-                          ship.setState("Sunk");
-                          d += ship.toString() + enc.toString() + "\n" + 
-                          "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + getWarChest() + "\n";
-                          return d;
-                      }
-                      
-                   } 
-                
-             }
-             
-           }
+    public String fightEncounter(int encNo) {
+    String s = "";
+    String t = "";
+    String u = "";
+    String v = "";
+    String y = "";
+    String z = "";
+    String c = "";
+    String d = "";
+
+    // Check if the encounter number is valid
+    if (isEncounter(encNo)) {
+        Encounter enc = getEncounters(encNo);
+
+        // First, check if the squadron is empty
+        if (squadron.isEmpty()) {
+            warChest = warChest - enc.getE_Prize();
+            s = "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n" 
+                + "State of warchest: " + warChest + "\n";
+            return s; // No ships available
         }
-        
-       return "No such encounter";
+
+        // Loop through the ships in the squadron
+        for (Ship ship : squadron.values()) {
+
+            // Check if the ship can fight based on the encounter type and skill level
+            if (enc.getE_Type().equalsIgnoreCase("Battle")) {
+                if (ship.getBattle() && ship.getSkillLevel() >= enc.getE_Level()) {
+                    warChest += enc.getE_Prize();
+                    ship.setState("Resting");
+                    u = ship.toString() + enc.toString() + 
+                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return u;
+                } else if (ship.getBattle() && ship.getSkillLevel() < enc.getE_Level()) {
+                    ship.setState("Sunk");
+                    warChest -= enc.getE_Prize();
+                    v = ship.toString() + enc.toString() + 
+                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return v;
+                }
+            }
+
+            if (enc.getE_Type().equalsIgnoreCase("Skirmish")) {
+                if (ship.getSkirmish() && ship.getSkillLevel() >= enc.getE_Level()) {
+                    warChest += enc.getE_Prize();
+                    ship.setState("Resting");
+                    y = ship.toString() + enc.toString() + 
+                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return y;
+                } else if (ship.getSkirmish() && ship.getSkillLevel() < enc.getE_Level()) {
+                    ship.setState("Sunk");
+                    warChest -= enc.getE_Prize();
+                    z = ship.toString() + enc.toString() + 
+                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return z;
+                }
+            }
+
+            if (enc.getE_Type().equalsIgnoreCase("Blockade")) {
+                if (ship.getBlockade() && ship.getSkillLevel() >= enc.getE_Level()) {
+                    warChest += enc.getE_Prize();
+                    ship.setState("Resting");
+                    c = ship.toString() + enc.toString() + 
+                        "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return c;
+                } else if (ship.getBlockade() && ship.getSkillLevel() < enc.getE_Level()) {
+                    ship.setState("Sunk");
+                    warChest -= enc.getE_Prize();
+                    d = ship.toString() + enc.toString() + 
+                        "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n" 
+                        + "State of warchest: " + warChest + "\n";
+                    return d;
+                }
+            }
+        }
     }
+
+    // If we reach this point, the encounter was not found or no ship could fight
+    return "No such encounter";
+}
+
 
     /** Provides a String representation of an encounter given by 
      * the encounter number
@@ -518,12 +488,6 @@ public class SeaBattles implements BATHS
     //*******************************************************************************
      private void setupShips()
      {
-         Man_O_War ship_1 = new Man_O_War("Daniel",3,"L",5,30);
-         Man_O_War ship_2 = new Man_O_War("Leol",2,"h",2,30);
-         Frigate shipf = new Frigate("Gerald",4,"pete",60,true);
-         Frigate shipt = new Frigate("Gemld",4,"pate",40, true);
-         Sloop ships = new Sloop("Lewis", "fred", 500, true);
-         Sloop shipq = new Sloop("Lawis", "frad", 700, false);
          Man_O_War ship3 = new Man_O_War("Victory", 3, "Alan Aikin", 3, 30);
          ship3.setCost(ship3.getType());
          ship3.setStates();
@@ -566,12 +530,7 @@ public class SeaBattles implements BATHS
          ship12.setDoctor("Yes");
          
          
-         reserve.put("Daniel",ship_1);
-         reserve.put("Leol",ship_2);
-         reserve.put("Gerald",shipf);
-         reserve.put("Gemld",shipt);
-         reserve.put("Lewis",ships);
-         reserve.put("Lawis",shipq);
+        
          reserve.put("Victory",ship3);
          reserve.put("Sophie",ship4);
          reserve.put("Endeavour",ship5);
@@ -583,12 +542,7 @@ public class SeaBattles implements BATHS
          reserve.put("Beast",ship11);
          reserve.put("Athena",ship12);
          
-         AllShips.add(ship_1);
-         AllShips.add(ship_2);
-         AllShips.add(shipf);
-         AllShips.add(shipt);
-         AllShips.add(ships);
-         AllShips.add(shipq);
+        
          AllShips.add(ship3);
          AllShips.add(ship4);
          AllShips.add(ship5);
@@ -673,32 +627,81 @@ public class SeaBattles implements BATHS
      */
     public void readEncounters(String filename)
     { 
-      
-        
-        
+        encounterList.clear(); // Optional: clear old data
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) 
+        {
+           String line;
+           int id = 1;
+           while ((line = br.readLine()) != null) 
+           {
+               String[] parts = line.split(",");
+               if (parts.length == 4) 
+               {
+                   String type = parts[0].trim();
+                   String location = parts[1].trim();
+                   int level = Integer.parseInt(parts[2].trim());
+                   double prize = Double.parseDouble(parts[3].trim());
+                   Encounter enc = new Encounter(type, level, location, prize);
+                   encounterList.put(id++, enc);
+               }
+           }
+        } 
+        catch (IOException e) 
+        {
+           e.printStackTrace();
+        }
     }   
  
     
     // ***************   file write/read  *********************
+    
     /** Writes whole game to the specified file
      * @param fname name of file storing requests
      */
-    public void saveGame(String fname)
-    {   // uses object serialisation 
-           
-    }
+    
+    public void saveGame(String fname) 
+    {
+       try 
+       {
+          FileOutputStream fileOut = new FileOutputStream(fname);
+          ObjectOutputStream out = new ObjectOutputStream(fileOut);
+          out.writeObject(this);
+          out.close();
+          fileOut.close();
+       } 
+       catch (IOException e) 
+       {
+          System.out.println("Error saving game: " + e.getMessage());
+       }
+}
+
     
     /** reads all information about the game from the specified file 
      * and returns 
      * @param fname name of file storing the game
      * @return the game (as an SeaBattles object)
      */
-    public SeaBattles loadGame(String fname)
-    {   // uses object serialisation 
-       
-        return null;
+     public SeaBattles loadGame(String fname)
+    {
+        // uses object serialisation 
+        SeaBattles loadedGame = null;
+        try 
+        {
+           FileInputStream fileIn = new FileInputStream(fname);
+           ObjectInputStream in = new ObjectInputStream(fileIn);
+           loadedGame = (SeaBattles) in.readObject();
+           in.close();
+           fileIn.close();
+        } 
+        catch (IOException | ClassNotFoundException e) 
+        {
+           e.printStackTrace();
+        }
+        return loadedGame;
     } 
     
     
  
 }
+
+
