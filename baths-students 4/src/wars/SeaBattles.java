@@ -582,6 +582,17 @@ public class SeaBattles implements BATHS
          Frigate shipt = new Frigate("Gemld",ShipState.SUNK,4,"pate",40, true);
          Sloop ships = new Sloop("Lewis",ShipState.RESTING, "fred", 500);
          Sloop shipq = new Sloop("Lawis",ShipState.ACTIVE, "frad", 700);
+         Man_O_War ship6 = new Man_O_War("Victory",ShipState.RESERVE,3,"Alan Aikin",3,30) ;
+         Frigate ship7 = new Frigate("Sophie",ShipState.RESERVE,8,"Ben Baggins",16,true) ;
+         Man_O_War ship8 = new Man_O_War("Endeavour",ShipState.RESERVE,4, "Col Cannon",2,20) ;
+         Sloop Ship9 = new Sloop("Arrow",ShipState.RESERVE,"Dan Dare",150 );
+         Man_O_War ship10 = new Man_O_War("Belerophon",ShipState.RESERVE,8, "Ed Evans",3,50) ;
+         Frigate ship11 = new Frigate("Surprise",ShipState.RESERVE,6,"Fred Fox",10,false) ;
+         Frigate ship12 = new Frigate("Jupiter",ShipState.RESERVE,7,"Gil Gamage",20,false) ;
+         Sloop Ship13 = new Sloop("Paris",ShipState.RESERVE,"Hal Henry",200 );
+         Sloop Ship14 = new Sloop("Beast",ShipState.RESERVE,"Ian Idle",400 );
+         Sloop Ship15 = new Sloop("Athena",ShipState.RESERVE,"John Jones",100 );
+         
          
          reserve.put("Daniel",ship_1);
          reserve.put("Leol",ship_2);
@@ -589,13 +600,22 @@ public class SeaBattles implements BATHS
          reserve.put("Gemld",shipt);
          reserve.put("Lewis",ships);
          reserve.put("Lawis",shipq);
+         reserve.put("Victory",ship6);
+         reserve.put("Sophie",ship7);
+         reserve.put("Endeavour",ship8);
+         reserve.put("Arrow", Ship9);
+         reserve.put("Belerophon", ship10);
+         reserve.put("Suprise", ship11);
+         reserve.put("Jupiter", ship12);
+         reserve.put("Paris", Ship13);
+         reserve.put("Beast", Ship14);
+         reserve.put("Athena", Ship15);
 
 
      }
      
     private void setupEncounters()
-    {
-        
+    { 
   
     }
     
