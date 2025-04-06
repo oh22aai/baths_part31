@@ -20,6 +20,8 @@ public class SeaBattles implements BATHS
     private Map< String, Ship> squadron;
     private ArrayList<Ship>AllShips;
     private Map< Integer, Encounter> encounterList;
+    
+
 
 //**************** BATHS ************************** 
     /** Constructor requires the name of the admiral
@@ -27,8 +29,8 @@ public class SeaBattles implements BATHS
      */  
     public SeaBattles(String adm)
     {
-        admiral = adm;
-       warChest = 1000; 
+       admiral = adm;
+       warChest = 1000.0; 
        reserve = new HashMap<>();
        squadron = new HashMap<>();
        AllShips = new ArrayList<>();
@@ -128,15 +130,17 @@ public class SeaBattles implements BATHS
      * @return a String representation of all ships in the reserve fleet
      **/
     public String getReserveFleet()
-    {   //assumes reserves is a Hashmap
+    { 
        StringBuilder reserveList = new StringBuilder(); 
        for (Ship ship : reserve.values()) 
        {  
-         reserveList.append(ship.toString())  
+        reserveList.append(ship.toString())  
                     .append("\n");  
        }
-        return reserveList.toString(); 
-    }
+       return reserveList.toString(); 
+}
+
+    
     
     /**Returns a String representation of the ships in the admiral's squadron
      * or the message "No ships commissioned"
@@ -144,21 +148,17 @@ public class SeaBattles implements BATHS
      **/
     public String getSquadron()
     {
-        StringBuilder squadronList = new StringBuilder();
-        for(Ship ship : squadron.values())
-        {
-            if(!squadron.isEmpty())
-            {
-                squadronList.append(ship.toString()).append("\n");
-            }
-            else
-            {
-                return "No ships";
-            }
-            
-        }
-   
-        return squadronList.toString();
+         if (squadron.isEmpty()) 
+         {
+            return "No ships"; 
+         }
+
+         StringBuilder squadronList = new StringBuilder();
+         for (Ship ship : squadron.values()) 
+         {
+            squadronList.append(ship.toString()).append("\n"); 
+         }
+         return squadronList.toString();
     }
     
     /**Returns a String representation of the ships sunk (or "no ships sunk yet")
@@ -172,13 +172,11 @@ public class SeaBattles implements BATHS
           if (ship.getShipState() ==  ShipState.SUNK)
           {
              s.append(ship.toString()).append("\n"); 
+             return s.toString();
           }
-          else
-          {
-              return "No sunken ship";
-          }
+          
        }
-       return s.toString();
+       return "no such ship";
     }
     
     /**Returns a String representation of the all ships in the game
@@ -187,18 +185,15 @@ public class SeaBattles implements BATHS
      **/
     public String getAllShips()
     {
-        StringBuilder shipsList = new StringBuilder();
-        for(Ship ship : AllShips)
+        if (AllShips.isEmpty()) 
         {
-            if(!AllShips.isEmpty())
-            {
-                shipsList.append(ship.toString()).append("\n");
-            }
-            else
-            {
-                return "No ships";
-            }
-            
+        return "No ships"; 
+        }
+
+        StringBuilder shipsList = new StringBuilder();
+        for (Ship ship : AllShips) 
+        {
+        shipsList.append(ship.toString()).append("\n"); 
         }
         return shipsList.toString();
     }
@@ -214,14 +209,11 @@ public class SeaBattles implements BATHS
         {
             if (ship.getShipName().equalsIgnoreCase(nme)) 
             {
-                 s += ship.toString();
+                 return s+=ship.toString();
             }
-            else
-            {
-                return "No such ship";
-            }
+            
         }
-        return s;
+        return "no such ship";
     }     
  
     // ***************** Fleet Ships ************************   
@@ -235,40 +227,26 @@ public class SeaBattles implements BATHS
      **/        
     public String commissionShip(String nme)
     {
-        String s = "";
-        for(Map.Entry<String,Ship > entry: reserve.entrySet())
-        {
-            Ship ship = entry.getValue();
-            if (ship.getShipName().equalsIgnoreCase(nme))
-            {
-                if(ship.getShipState() == ShipState.RESERVE)
-                {
-                if(ship.getCost() < warChest)
-                {
-                    warChest = warChest - ship.getCost();
-                    String shipID = entry.getKey(); // Get the key (ID) for removal
-                    reserve.remove(shipID);      // Remove from reserve
-                    squadron.put(shipID, ship);  // Add to squadron
-
-                    ship.setState("Active");  // Optional: change state to ACTIVE
-                    s += "- " + ship.getShipName() + " commissioned to squadron";
-                    return s;
-                }
-                else if(ship.getCost() > warChest)
-                {
-                    s += "- Not enough funds to commission " + ship.getShipName();
-                    return s;
-                }
-                }
-              
-                
-            }
-            
+        Ship ship = reserve.get(nme);
+        if (ship != null && ship.getShipState() == ShipState.RESERVE) {
+             if (ship.getCost() <= warChest) 
+             {
+                 warChest -= ship.getCost();
+                 reserve.remove(nme);
+                 squadron.put(nme, ship);
+                 ship.setState("Active");
+                 return "- " + ship.getShipName() + " commissioned to squadron";
+             } 
+             else 
+             {
+                 return "- Not enough funds to commission " + ship.getShipName();
+             }
         }
-        return "- Ship not found";
+        return "no such ship found";
+
     }
         
-    /** Re§turns true if the ship with the name is in the admiral's squadron, false otherwise.
+    /** Returns true if the ship with the name is in the admiral's squadron, false otherwise.
      * @param nme is the name of the ship
      * @return returns true if the ship with the name is in the admiral's squadron, false otherwise.
      **/
@@ -280,10 +258,7 @@ public class SeaBattles implements BATHS
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            
         }
         return false;
     }
@@ -302,17 +277,13 @@ public class SeaBattles implements BATHS
             {
                 if(ship.getShipState() != ShipState.SUNK && ship.getShipState() != ShipState.RESERVE)
                 {
-                  String shipID = entry.getKey(); // Get the key (ID) for removal
-                  squadron.remove(shipID);      // Remove from squadron
-                  reserve.put(shipID, ship);// Add to reserve
+                  String shipID = entry.getKey(); 
+                  squadron.remove(shipID);      
+                  reserve.put(shipID, ship);
                   warChest = warChest + ship.getCost()/2;
                 
-                  ship.setState("Reserve");  // Optional: change state to reserve
+                  ship.setState("Reserve");  
                   return true;
-                }
-                else
-                {
-                    return false;
                 }
                 
             }
@@ -327,16 +298,16 @@ public class SeaBattles implements BATHS
      */
     public void restoreShip(String ref)
     {
-       for (Ship ship : squadron.values()) 
+        for (Ship ship : squadron.values()) 
         {
             if (ship.getShipName().equalsIgnoreCase(ref)) 
             {
-                if (ship.getShipState() != ShipState.RESERVE && ship.getShipState() != ShipState.SUNK && ship.getShipState() != ShipState.ACTIVE)
+                if (ship.getShipState() == ShipState.RESTING)
                 {
                     ship.setState("Active");
                 }
             }
-        } 
+        }
     }
     
 //**********************Encounters************************* 
@@ -346,19 +317,17 @@ public class SeaBattles implements BATHS
      **/
      public boolean isEncounter(int num)
      {
-         for(Integer encounterId : encounterList.keySet())
-         {
-             Encounter encounter = encounterList.get(encounterId);
-             if(encounter.getE_Number() == num)
+         
+        for (Encounter encounter : encounterList.values()) 
+        {
+             if (encounter.getE_Number() == num) 
              {
-                 return true;
+                 return true; // Found a match
              }
-             else
-             {
-                return false; 
-             }
-         }
-         return false;
+        }
+        return false; // No matches found after checking all
+
+
      }
      
      
@@ -381,16 +350,21 @@ public class SeaBattles implements BATHS
     public String fightEncounter(int encNo)
     {
        String s = "";
+       String t = "";
+       String u = "";
+       String v = "";
+       String y = "";
+       String z = "";
+       String c = "";
+       String d = "";
        if (isEncounter(encNo))
         {
            Encounter enc = getEncounters(encNo);
            for (Ship ship : squadron.values())
            {
-              if(enc.getE_Type().equalsIgnoreCase("Battle"))
-              {
-                  if(squadron.isEmpty())
+              if(squadron.isEmpty())
                   {
-                      warChest -= enc.getE_Prize();
+                      warChest = warChest - enc.getE_Prize();
                       s += ship.toString() + enc.toString() + 
                       "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n"
                       + "State of warchest: " + warChest + "\n";
@@ -398,133 +372,98 @@ public class SeaBattles implements BATHS
                   }
                   else if(squadron.isEmpty() && warChest <= 0)
                   {
-                      s += ship.toString() + enc.toString() + 
+                      t += ship.toString() + enc.toString() + 
                       "Encounter is lost and you lose your job"+ "\n"
                       + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else
-                  {
+                      return t;
+                  } 
+                  
+                  
+              if(enc.getE_Type().equalsIgnoreCase("Battle"))
+              {
                    if(ship.getBattle() == true)
                    {
                       if(ship.getSkillLevel() >= enc.getE_Level())
                       {
                           warChest += enc.getE_Prize();
                           ship.setState("Resting");
-                          s += ship.toString() + enc.toString() + 
+                          u += ship.toString() + enc.toString() + 
                           "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
                           + "State of warchest: " + warChest + "\n";
-                          return s;
+                          return u;
                       }
                       else if(ship.getSkillLevel() < enc.getE_Level())
                       {
                           ship.setState("Sunk");
                           warChest -= enc.getE_Prize();
-                          s += ship.toString() + enc.toString() + 
+                          v += ship.toString() + enc.toString() + 
                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
                           + "State of warchest: " + warChest + "\n";
-                          return s;
+                          return v;
                       }
                       
                    } 
-                }
+                
              }
              
               if(enc.getE_Type().equalsIgnoreCase("Skirmish"))
               {
-                  if(squadron.isEmpty())
-                  {
-                      warChest -= enc.getE_Prize();
-                      s += ship.toString() + enc.toString() + 
-                      "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else if(squadron.isEmpty() && warChest <= 0)
-                  {
-                      s += ship.toString() + enc.toString() + 
-                      "Encounter is lost and you lose your job"+ "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else
-                  {
                    if(ship.getSkirmish() == true)
                    {
                       if(ship.getSkillLevel() >= enc.getE_Level())
                       {
                           warChest += enc.getE_Prize();
                           ship.setState("Resting");
-                          s += ship.toString() + enc.toString() + 
+                          y += ship.toString() + enc.toString() + 
                           "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
                           + "State of warchest: " + warChest + "\n";
-                          return s;
+                          return y;
                       }
                       else if(ship.getSkillLevel() < enc.getE_Level())
                       {
                           ship.setState("Sunk");
-                          warChest -= enc.getE_Prize();
-                          s += ship.toString() + enc.toString() + 
+                          warChest = warChest - enc.getE_Prize();
+                          z += ship.toString() + enc.toString() + 
                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
                           + "State of warchest: " + warChest + "\n";
-                          return s;
+                          return z;
                       }
                       
                    } 
-                }
+                
              }
              
               if(enc.getE_Type().equalsIgnoreCase("Blockade"))
               {
-                  if(squadron.isEmpty())
-                  {
-                      warChest -= enc.getE_Prize();
-                      s += ship.toString() + enc.toString() + 
-                      "Encounter lost as no suitable ship available, prize lost is: " + enc.getE_Prize() + "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else if(squadron.isEmpty() && warChest <= 0)
-                  {
-                      s += ship.toString() + enc.toString() + 
-                      "Encounter is lost and you lose your job"+ "\n"
-                      + "State of warchest: " + warChest + "\n";
-                      return s;
-                  }
-                  else
-                  {
                    if(ship.getBlockade() == true)
                    {
                       if(ship.getSkillLevel() >= enc.getE_Level())
                       {
-                          warChest += enc.getE_Prize();
+                          warChest = warChest + enc.getE_Prize();
                           ship.setState("Resting");
-                          s += ship.toString() + enc.toString() + 
+                          c += ship.toString() + enc.toString() + 
                           "Encounter won by skill level, prize won is: " + enc.getE_Prize() + "\n"
                           + "State of warchest: " + warChest + "\n";
-                          return s;
+                          return c;
                       }
                       else if(ship.getSkillLevel() < enc.getE_Level())
                       {
+                          warChest = warChest - enc.getE_Prize();
                           ship.setState("Sunk");
-                          warChest -= enc.getE_Prize();
-                          s += ship.toString() + enc.toString() + 
+                          d += ship.toString() + enc.toString() + "\n" + 
                           "Encounter lost on skill level, prize lost is: " + enc.getE_Prize() + "\n"
-                          + "State of warchest: " + warChest + "\n";
-                          return s;
+                          + "State of warchest: " + getWarChest() + "\n";
+                          return d;
                       }
                       
                    } 
-                }
+                
              }
              
            }
         }
-        else
-        {
-            return "No such encounter";
-        }
-        return s;
+        
+       return "No such encounter";
     }
 
     /** Provides a String representation of an encounter given by 
@@ -535,19 +474,14 @@ public class SeaBattles implements BATHS
      **/
     public String getEncounter(int num)
     {
-        for(Integer encounterId : encounterList.keySet())
-        {
-             Encounter encounter = encounterList.get(encounterId);
-             if(encounter.getE_Number() == num)
-             {
-                 return encounter.toString();
-             }
-             else
-             {
-                return "No such encounter"; 
-             }
+        for (Encounter encounter : encounterList.values()) {
+         if (encounter.getE_Number() == num) 
+         {
+            return encounter.toString();
+                
+         }
         }
-        return "No such encounter";
+        return "No such encounter"; 
     }
     
     /** Provides a String representation of all encounters 
@@ -561,14 +495,11 @@ public class SeaBattles implements BATHS
             if(!encounterList.isEmpty())
             {
                 encList.append(enc.toString()).append("\n");
-            }
-            else
-            {
-                encList.append("No ships");
+                return encList.toString();
             }
             
         }
-        return encList.toString();
+        return "no encounters available";
     }
     
 
@@ -576,22 +507,52 @@ public class SeaBattles implements BATHS
     //*******************************************************************************
      private void setupShips()
      {
-       Man_O_War ship_1 = new Man_O_War("Daniel",ShipState.RESERVE,3,"L",5,30);
-         Man_O_War ship_2 = new Man_O_War("Leol",ShipState.ACTIVE,2,"h",2,30);
-         Frigate shipf = new Frigate("Gerald",ShipState.RESERVE,4,"pete",60,true);
-         Frigate shipt = new Frigate("Gemld",ShipState.SUNK,4,"pate",40, true);
-         Sloop ships = new Sloop("Lewis",ShipState.RESTING, "fred", 500);
-         Sloop shipq = new Sloop("Lawis",ShipState.ACTIVE, "frad", 700);
-         Man_O_War ship6 = new Man_O_War("Victory",ShipState.RESERVE,3,"Alan Aikin",3,30) ;
-         Frigate ship7 = new Frigate("Sophie",ShipState.RESERVE,8,"Ben Baggins",16,true) ;
-         Man_O_War ship8 = new Man_O_War("Endeavour",ShipState.RESERVE,4, "Col Cannon",2,20) ;
-         Sloop Ship9 = new Sloop("Arrow",ShipState.RESERVE,"Dan Dare",150 );
-         Man_O_War ship10 = new Man_O_War("Belerophon",ShipState.RESERVE,8, "Ed Evans",3,50) ;
-         Frigate ship11 = new Frigate("Surprise",ShipState.RESERVE,6,"Fred Fox",10,false) ;
-         Frigate ship12 = new Frigate("Jupiter",ShipState.RESERVE,7,"Gil Gamage",20,false) ;
-         Sloop Ship13 = new Sloop("Paris",ShipState.RESERVE,"Hal Henry",200 );
-         Sloop Ship14 = new Sloop("Beast",ShipState.RESERVE,"Ian Idle",400 );
-         Sloop Ship15 = new Sloop("Athena",ShipState.RESERVE,"John Jones",100 );
+         Man_O_War ship_1 = new Man_O_War("Daniel",3,"L",5,30);
+         Man_O_War ship_2 = new Man_O_War("Leol",2,"h",2,30);
+         Frigate shipf = new Frigate("Gerald",4,"pete",60,true);
+         Frigate shipt = new Frigate("Gemld",4,"pate",40, true);
+         Sloop ships = new Sloop("Lewis", "fred", 500, true);
+         Sloop shipq = new Sloop("Lawis", "frad", 700, false);
+         Man_O_War ship3 = new Man_O_War("Victory", 3, "Alan Aikin", 3, 30);
+         ship3.setCost(ship3.getType());
+         ship3.setStates();
+         ship3.setFights();
+         Frigate ship4 = new Frigate("Sophie", 8, "Ben Baggins", 16, true);
+         ship4.setCost(ship4.getType());
+         ship4.setStates();
+         ship4.setBlockades();
+         Man_O_War ship5 = new Man_O_War("Endeavour", 4, "Col Cannon", 2, 20);
+         ship5.setCost(ship5.getType());
+         ship5.setStates();
+         ship5.setFights();
+         Sloop ship6 = new Sloop("Arrow", "Dan Dare", 150, true);
+         ship6.setCost(ship6.getType());
+         ship6.setStates();
+         ship6.setDoctor("Yes");
+         Man_O_War ship7 = new Man_O_War("Belerophon", 8, "Ed Evans", 3, 50);
+         ship7.setCost(ship7.getType());
+         ship7.setStates();
+         ship7.setFights();
+         Frigate ship8 = new Frigate("Surprise", 6, "Fred Fox",10, false);
+         ship8.setCost(ship8.getType());
+         ship8.setStates();
+         ship8.setBlockades();
+         Frigate ship9 = new Frigate("Jupiter", 7, "Gil Gamage",20, false);
+         ship9.setCost(ship9.getType());
+         ship9.setStates();
+         ship9.setBlockades();
+         Sloop ship10 = new Sloop("Paris", "Hal Henry", 200, true);
+         ship10.setCost(ship10.getType());
+         ship10.setStates();
+         ship10.setDoctor("Yes");
+         Sloop ship11 = new Sloop("Beast", "Ian Idle", 400, false);
+         ship11.setCost(ship11.getType());
+         ship11.setStates();
+         ship11.setDoctor("No");
+         Sloop ship12 = new Sloop("Athena", "John Jones", 100, true);
+         ship12.setCost(ship12.getType());
+         ship12.setStates();
+         ship12.setDoctor("Yes");
          
          
          reserve.put("Daniel",ship_1);
@@ -600,22 +561,62 @@ public class SeaBattles implements BATHS
          reserve.put("Gemld",shipt);
          reserve.put("Lewis",ships);
          reserve.put("Lawis",shipq);
-         reserve.put("Victory",ship6);
-         reserve.put("Sophie",ship7);
-         reserve.put("Endeavour",ship8);
-         reserve.put("Arrow", Ship9);
-         reserve.put("Belerophon", ship10);
-         reserve.put("Suprise", ship11);
-         reserve.put("Jupiter", ship12);
-         reserve.put("Paris", Ship13);
-         reserve.put("Beast", Ship14);
-         reserve.put("Athena", Ship15);
-
+         reserve.put("Victory",ship3);
+         reserve.put("Sophie",ship4);
+         reserve.put("Endeavour",ship5);
+         reserve.put("Arrow",ship6);
+         reserve.put("Belerophon",ship7);
+         reserve.put("Surprise",ship8);
+         reserve.put("Jupiter",ship9);
+         reserve.put("Paris",ship10);
+         reserve.put("Beast",ship11);
+         reserve.put("Athena",ship12);
+         
+         AllShips.add(ship_1);
+         AllShips.add(ship_2);
+         AllShips.add(shipf);
+         AllShips.add(shipt);
+         AllShips.add(ships);
+         AllShips.add(shipq);
+         AllShips.add(ship3);
+         AllShips.add(ship4);
+         AllShips.add(ship5);
+         AllShips.add(ship6);
+         AllShips.add(ship7);
+         AllShips.add(ship8);
+         AllShips.add(ship9);
+         AllShips.add(ship10);
+         AllShips.add(ship11);
+         AllShips.add(ship12);
+       
 
      }
      
     private void setupEncounters()
-    { 
+    {
+        Encounter enc1 = new Encounter("Battle", 3, "Trafalgar", 300);
+        Encounter enc2 = new Encounter("Skirmish", 3, "Belle Isle", 120);
+        Encounter enc3 = new Encounter("Blockade", 3, "Brest", 150);
+        Encounter enc4 = new Encounter("Battle", 9, "St Malo", 200);
+        Encounter enc5 = new Encounter("Blockade", 7, "Dieppe", 90.0);
+        Encounter enc6 = new Encounter("Skirmish", 8, "Jersey", 45);
+        Encounter enc7 = new Encounter("Blockade", 6, "Nantes", 130);
+        Encounter enc8 = new Encounter("Battle", 4, "Finisterre", 100);
+        Encounter enc9 = new Encounter("Skirmish", 5, "Biscay", 200);
+        Encounter enc10 = new Encounter("Battle", 1, "Cadiz", 250);
+        
+        encounterList.put(1,enc1);
+        encounterList.put(2,enc2);
+        encounterList.put(3,enc3);
+        encounterList.put(4,enc4);
+        encounterList.put(5,enc5);
+        encounterList.put(6,enc6);
+        encounterList.put(7,enc7);
+        encounterList.put(8,enc8);
+        encounterList.put(9,enc9);
+        encounterList.put(10,enc10);
+        
+        
   
     }
     
@@ -644,7 +645,7 @@ public class SeaBattles implements BATHS
         System.out.println("Error" + encId + "not found");
         return null;
     }
-        
+    
     // Useful private methods to "get" objects from collections/maps
 
     //*******************************************************************************
@@ -686,8 +687,7 @@ public class SeaBattles implements BATHS
         return null;
     } 
     
+    
  
 }
-
-
 
